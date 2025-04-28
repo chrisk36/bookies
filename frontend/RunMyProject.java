@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class RunMyProject implements Runnable {
+    private String savedAuthorName;
+    private int savedTextLength;
+
     @Override
     public void run() {
         JFrame frame = new JFrame("Project");
@@ -36,10 +39,19 @@ public class RunMyProject implements Runnable {
             JTextField textLength = new JTextField(20);
             JButton submitButton = new JButton("Submit");
 
-//            submitButton.addActionListener(ev -> {
-//                String input = textField.getText();
-//                JOptionPane.showMessageDialog(frame, "You entered: " + input);
-//            });
+            submitButton.addActionListener(ev -> {
+                savedAuthorName = authorName.getText();
+                try {
+                    savedTextLength = Integer.parseInt(textLength.getText());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Please enter a valid number for text length.");
+                    return;
+                }
+
+                JOptionPane.showMessageDialog(frame,
+                        "Saved!\nAuthor: " + savedAuthorName + "\nLength: " + savedTextLength);
+            });
+
             control_panel.remove(start);
             control_panel.add(labelOne);
             control_panel.add(authorName);
