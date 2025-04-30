@@ -99,7 +99,7 @@ public class GutenbergSearch {
             reader.close();
             return bookText.toString();
         } catch (IOException e) {
-            return "⚠️ Error downloading book: " + e.getMessage();
+            return "Error downloading book: " + e.getMessage();
         }
     }
     
@@ -127,7 +127,7 @@ public class GutenbergSearch {
                 }
             }
         }
-        return "❌ Book not found in index.";
+        return "Book not found in index.";
     }
 
     //Saves to CSV (just for checking if works correctly)
