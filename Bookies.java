@@ -101,7 +101,12 @@ public class Bookies extends JPanel{
         title.setFont(new Font("Monospace", Font.PLAIN, 50));
         title.setForeground(Color.decode("#808f85"));
         title.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
+        JLabel warning = new JLabel("Warning: do not choose non-english or audio books!");
+        warning.setFont(new Font("Monospace", Font.PLAIN, 20));
+        warning.setForeground(Color.decode("#808f85"));
+        warning.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
         bookListPanel.add(title);
+        bookListPanel.add(warning);
         bookListPanel.setBackground(Color.decode("#F2E9DC"));
         List<GutenbergSearch.BookEntry> books = GutenbergSearch.getBooksByAuthor(RunMyProject.savedAuthorName);
         int idx = 0;
@@ -204,7 +209,7 @@ public class Bookies extends JPanel{
 
             g.setFont(new Font("Monospace", Font.PLAIN, 20));
             g.setColor(Color.decode("#808F85"));
-            g.drawString("Recommended Authors: Jane Austen, Agatha Christie, F. Scott Fitzgerald", 150, 510);
+            g.drawString("Recommended Authors: Ray Bradbury, Agatha Christie, F. Scott Fitzgerald", 140, 510);
             g.drawString("Other authors available too! Error message will appear if not usable.", 155, 540);
             g.setFont(new Font("Monospace", Font.BOLD, 200));
             g.setColor(Color.decode("#808f85"));
