@@ -51,7 +51,7 @@ public class RunMyProject implements Runnable {
 
             submitButton.addActionListener(ev -> {
                 savedAuthorName = authorName.getText();
-                //System.out.println (savedAuthorName);
+
                 try {
                     savedTextLength = Integer.parseInt(textLength.getText());
                     if (!GutenbergSearch.authorExists(savedAuthorName)) {
@@ -63,18 +63,17 @@ public class RunMyProject implements Runnable {
                     return;
                 }
                 if (GutenbergSearch.authorExists(savedAuthorName)) {
-                    JOptionPane.showMessageDialog(frame,
-                            "Saved!\nAuthor: " + savedAuthorName + "\nLength: " + savedTextLength);
+
                     bookies.setPickBookPage(true);
                     bookies.setActualProject(false);
                     control_panel.removeAll();
                     control_panel.revalidate();
                     control_panel.repaint();
-                    JLabel label = new JLabel("Enter Book Number (i.e. 1, 2, 3): ");
+                    JLabel label = new JLabel("Book Number (i.e. 1, 2, 3): ");
                     JTextField bookNumber = new JTextField(20);
-                    JLabel labelKey = new JLabel("Enter keyword");
+                    JLabel labelKey = new JLabel("Keyword: ");
                     JTextField keyword = new JTextField(20);
-                    JButton submitButton2 = new JButton("Generate!");
+                    JButton submitButton2 = new JButton("Generate! (wait for it)");
                     control_panel.add(label);
                     control_panel.add(bookNumber);
                     control_panel.add(labelKey);
@@ -89,12 +88,6 @@ public class RunMyProject implements Runnable {
                         control_panel.removeAll();
                         control_panel.revalidate();
                         control_panel.repaint();
-                        JButton restart = new JButton("Restart!");
-                        control_panel.add(restart);
-                        submitButton2.addActionListener(v -> {
-                            bookies.setGeneratedTextPage(false);
-                            bookies.setActualProject(true);
-                        });
                     });
                 }
             });

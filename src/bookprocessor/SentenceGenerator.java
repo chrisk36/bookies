@@ -19,10 +19,6 @@ public class SentenceGenerator {
         for (String word : cleanedText.split("\\s+")) {
             normalizedWords.add(normalizeWord(word));
         }
-        System.out.println ("trained!");
-        for (String str: normalizedWords) {
-            System.out.println (str);
-        }
     }
 
     /**

@@ -73,7 +73,7 @@ public class Bookies extends JPanel{
         }
     }
     public boolean getPickBookPage() {
-        System.out.println (pickBookPage);
+        //System.out.println (pickBookPage);
         return this.pickBookPage;
     }
 
@@ -100,7 +100,7 @@ public class Bookies extends JPanel{
         JLabel title = new JLabel("Books By " + RunMyProject.savedAuthorName);
         title.setFont(new Font("Monospace", Font.PLAIN, 50));
         title.setForeground(Color.decode("#808f85"));
-        title.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        title.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
         bookListPanel.add(title);
         bookListPanel.setBackground(Color.decode("#F2E9DC"));
         List<GutenbergSearch.BookEntry> books = GutenbergSearch.getBooksByAuthor(RunMyProject.savedAuthorName);
@@ -110,7 +110,7 @@ public class Bookies extends JPanel{
             JLabel bookLabel = new JLabel(idx + ") " + bookEntry.title);
             bookLabel.setFont(new Font("Monospace", Font.PLAIN, 20));
             bookLabel.setForeground(Color.decode("#595959"));
-            bookLabel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+            bookLabel.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 50));
             bookListPanel.add(bookLabel);
         }
 
@@ -133,7 +133,7 @@ public class Bookies extends JPanel{
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
         textPanel.setBackground(Color.decode("#F2E9DC"));
         textPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
-        System.out.println (RunMyProject.chosenBook.ebookNumber);
+        //System.out.println (RunMyProject.chosenBook.ebookNumber);
 
         String plainText = GutenbergSearch.getPlaintextByEbookNumber(RunMyProject.chosenBook.ebookNumber);
         String cleanedText = BookCleaner.cleanText(plainText);
@@ -141,7 +141,13 @@ public class Bookies extends JPanel{
         SentenceGenerator sentenceGenerator = new SentenceGenerator();
         sentenceGenerator.train(cleanedText);
         String generatedText = sentenceGenerator.generateWithKeyword(RunMyProject.keyword, RunMyProject.savedTextLength);
-        System.out.println (generatedText);
+
+        JTextArea title = new JTextArea ("Generated Text!");
+        title.setFont(new Font("Monospaced", Font.PLAIN, 50));
+        title.setEditable(false);
+        title.setBackground(Color.decode("#F2E9DC"));
+        title.setForeground(Color.decode("#808F85"));
+
         JTextArea textArea = new JTextArea(generatedText);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
@@ -151,6 +157,7 @@ public class Bookies extends JPanel{
         textArea.setForeground(Color.decode("#595959"));
         textArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+        textPanel.add(title);
         textPanel.add(textArea);
 
         JScrollPane scrollPane = new JScrollPane(textPanel);
@@ -182,17 +189,26 @@ public class Bookies extends JPanel{
             g.setColor(Color.decode("#d36135"));
             g.drawString("by natalie lim, christian kim, & kate li", 150, 550);
             g.setColor(Color.decode("#595959"));
-            g.setFont(new Font("Times", Font.BOLD, 20));
+            g.setFont(new Font("Monospace", Font.BOLD, 20));
             //g.drawString("click anywhere to get started", 340, 500);
         } else if (actualProject) {
             g.setColor(Color.decode("#F2E9DC"));
             g.fillRect(0, 0, 1000, 1000);
-            g.setFont(new Font("Times", Font.BOLD, 30));
+            g.setFont(new Font("Monospace", Font.BOLD, 35));
             g.setColor(Color.decode("#d36135"));
-            g.drawString("generate text in the style of your fave authors!", 130, 250);
-            g.setFont(new Font("Times", Font.BOLD, 200));
+            g.drawString("Generate text in the style of your fave authors!", 85, 170);
+
+            ImageIcon cat = new ImageIcon("images/cat.png");
+            Image img = cat.getImage();
+            g.drawImage(img, 400, 250, 185, 200, this);
+
+            g.setFont(new Font("Monospace", Font.PLAIN, 20));
+            g.setColor(Color.decode("#808F85"));
+            g.drawString("Recommended Authors: Jane Austen, Agatha Christie, F. Scott Fitzgerald", 150, 510);
+            g.drawString("Other authors available too! Error message will appear if not usable.", 155, 540);
+            g.setFont(new Font("Monospace", Font.BOLD, 200));
             g.setColor(Color.decode("#808f85"));
-            g.drawString("↓", 430, 550);
+            g.drawString("↓", 430, 800);
         }
     }
 }
