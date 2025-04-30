@@ -7,7 +7,10 @@ import java.util.NoSuchElementException;
 
 public class RunMyProject implements Runnable {
     public static String savedAuthorName;
-    private int savedTextLength;
+    public static int savedTextLength;
+    public static int bookNumber;
+    public static String keyword;
+    public static GutenbergSearch.BookEntry chosenBook;
 
     @Override
     public void run() {
@@ -28,7 +31,7 @@ public class RunMyProject implements Runnable {
         frame.setSize(1000, 1000);
         frame.setVisible(true);
 
-        final JButton start = new JButton("Get Started");
+        final JButton start = new JButton("Get Started (might take a few seconds to load)");
         start.addActionListener(e -> {
             bookies.setActualProject(true);
             bookies.setIntroPage(false);
@@ -64,16 +67,35 @@ public class RunMyProject implements Runnable {
                             "Saved!\nAuthor: " + savedAuthorName + "\nLength: " + savedTextLength);
                     bookies.setPickBookPage(true);
                     bookies.setActualProject(false);
-                    runPickBookPage(savedAuthorName, savedTextLength);
                     control_panel.removeAll();
                     control_panel.revalidate();
                     control_panel.repaint();
                     JLabel label = new JLabel("Enter Book Number (i.e. 1, 2, 3): ");
                     JTextField bookNumber = new JTextField(20);
-                    JButton submitButton2 = new JButton("Submit");
+                    JLabel labelKey = new JLabel("Enter keyword");
+                    JTextField keyword = new JTextField(20);
+                    JButton submitButton2 = new JButton("Generate!");
                     control_panel.add(label);
                     control_panel.add(bookNumber);
+                    control_panel.add(labelKey);
+                    control_panel.add(keyword);
                     control_panel.add(submitButton2);
+                    submitButton2.addActionListener(eq -> {
+                        RunMyProject.bookNumber = Integer.parseInt(bookNumber.getText());
+                        RunMyProject.chosenBook = GutenbergSearch.getBooksByAuthor(savedAuthorName).get(RunMyProject.bookNumber-1);
+                        RunMyProject.keyword = keyword.getText();
+                        bookies.setPickBookPage(false);
+                        bookies.setGeneratedTextPage(true);
+                        control_panel.removeAll();
+                        control_panel.revalidate();
+                        control_panel.repaint();
+                        JButton restart = new JButton("Restart!");
+                        control_panel.add(restart);
+                        submitButton2.addActionListener(v -> {
+                            bookies.setGeneratedTextPage(false);
+                            bookies.setActualProject(true);
+                        });
+                    });
                 }
             });
 
@@ -93,9 +115,6 @@ public class RunMyProject implements Runnable {
         bookies.requestFocusInWindow();
     }
 
-    public void runPickBookPage(String savedAuthorName, int savedTextLength) {
-        GutenbergSearch.getBooksByAuthor(savedAuthorName);
-    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new RunMyProject());

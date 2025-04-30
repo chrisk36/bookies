@@ -1,5 +1,8 @@
 package org.cis1200;
 
+import org.cis1200.src.bookprocessor.BookCleaner;
+import org.cis1200.src.bookprocessor.SentenceGenerator;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -76,6 +79,14 @@ public class Bookies extends JPanel{
 
     public void setGeneratedTextPage (boolean isTrue) {
         this.generatedTextPage = isTrue;
+        this.pickBookPage = !isTrue;
+        if (isTrue) {
+            renderGeneratedTextPage();
+        } else {
+            this.removeAll();
+            this.revalidate();
+            this.repaint();
+        }
     }
 
     public boolean isGeneratedTextPage() {
@@ -114,6 +125,45 @@ public class Bookies extends JPanel{
         this.revalidate();
         this.repaint();
     }
+
+    public void renderGeneratedTextPage() {
+        this.removeAll();
+
+        JPanel textPanel = new JPanel();
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+        textPanel.setBackground(Color.decode("#F2E9DC"));
+        textPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
+        System.out.println (RunMyProject.chosenBook.ebookNumber);
+
+        String plainText = GutenbergSearch.getPlaintextByEbookNumber(RunMyProject.chosenBook.ebookNumber);
+        String cleanedText = BookCleaner.cleanText(plainText);
+        //System.out.println(cleanedText);
+        SentenceGenerator sentenceGenerator = new SentenceGenerator();
+        sentenceGenerator.train(cleanedText);
+        String generatedText = sentenceGenerator.generateWithKeyword(RunMyProject.keyword, RunMyProject.savedTextLength);
+        System.out.println (generatedText);
+        JTextArea textArea = new JTextArea(generatedText);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 18));
+        textArea.setEditable(false);
+        textArea.setBackground(Color.decode("#F2E9DC"));
+        textArea.setForeground(Color.decode("#595959"));
+        textArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        textPanel.add(textArea);
+
+        JScrollPane scrollPane = new JScrollPane(textPanel);
+        scrollPane.setPreferredSize(new Dimension(1000, 800));
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setBorder(null);
+
+        this.setLayout(new BorderLayout());
+        this.add(scrollPane, BorderLayout.CENTER);
+        this.revalidate();
+        this.repaint();
+    }
+
 
     @Override
     public void paintComponent(Graphics g) {
