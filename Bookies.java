@@ -200,7 +200,7 @@ public class Bookies extends JPanel{
 
             ImageIcon cat = new ImageIcon("images/cat.png");
             Image img = cat.getImage();
-            g.drawImage(img, 400, 250, 185, 200, this);
+            g.drawImage(img, 395, 250, 200, 200, this);
 
             g.setFont(new Font("Monospace", Font.PLAIN, 20));
             g.setColor(Color.decode("#808F85"));
