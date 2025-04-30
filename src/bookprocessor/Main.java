@@ -1,4 +1,4 @@
-package bookprocessor;
+package org.cis1200.src.bookprocessor;
 
 public class Main {
     public static void main(String[] args) {

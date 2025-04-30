@@ -1,10 +1,12 @@
-package org.cis1200.frontend;
+package org.cis1200;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.util.NoSuchElementException;
 
 public class RunMyProject implements Runnable {
-    private String savedAuthorName;
+    public static String savedAuthorName;
     private int savedTextLength;
 
     @Override
@@ -23,14 +25,13 @@ public class RunMyProject implements Runnable {
         frame.add(bookies, java.awt.BorderLayout.CENTER);
 
         frame.pack();
-        frame.setSize(1000, 750);
+        frame.setSize(1000, 1000);
         frame.setVisible(true);
 
         final JButton start = new JButton("Get Started");
         start.addActionListener(e -> {
             bookies.setActualProject(true);
             bookies.setIntroPage(false);
-
             start.setEnabled(false);
 
             JLabel labelOne = new JLabel("Enter author name:");
@@ -39,17 +40,41 @@ public class RunMyProject implements Runnable {
             JTextField textLength = new JTextField(20);
             JButton submitButton = new JButton("Submit");
 
+            try {
+                GutenbergSearch.loadIndex();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
             submitButton.addActionListener(ev -> {
                 savedAuthorName = authorName.getText();
+                //System.out.println (savedAuthorName);
                 try {
                     savedTextLength = Integer.parseInt(textLength.getText());
+                    if (!GutenbergSearch.authorExists(savedAuthorName)) {
+                        JOptionPane.showMessageDialog(null, "This author does not exist! " +
+                                "Please try again.");
+                    }
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(frame, "Please enter a valid number for text length.");
                     return;
                 }
-
-                JOptionPane.showMessageDialog(frame,
-                        "Saved!\nAuthor: " + savedAuthorName + "\nLength: " + savedTextLength);
+                if (GutenbergSearch.authorExists(savedAuthorName)) {
+                    JOptionPane.showMessageDialog(frame,
+                            "Saved!\nAuthor: " + savedAuthorName + "\nLength: " + savedTextLength);
+                    bookies.setPickBookPage(true);
+                    bookies.setActualProject(false);
+                    runPickBookPage(savedAuthorName, savedTextLength);
+                    control_panel.removeAll();
+                    control_panel.revalidate();
+                    control_panel.repaint();
+                    JLabel label = new JLabel("Enter Book Number (i.e. 1, 2, 3): ");
+                    JTextField bookNumber = new JTextField(20);
+                    JButton submitButton2 = new JButton("Submit");
+                    control_panel.add(label);
+                    control_panel.add(bookNumber);
+                    control_panel.add(submitButton2);
+                }
             });
 
             control_panel.remove(start);
@@ -66,6 +91,10 @@ public class RunMyProject implements Runnable {
 
 
         bookies.requestFocusInWindow();
+    }
+
+    public void runPickBookPage(String savedAuthorName, int savedTextLength) {
+        GutenbergSearch.getBooksByAuthor(savedAuthorName);
     }
 
     public static void main(String[] args) {
