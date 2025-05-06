@@ -39,7 +39,7 @@ public class RunMyProject implements Runnable {
 
             JLabel labelOne = new JLabel("Enter author name:");
             JTextField authorName = new JTextField(20);
-            JLabel labelTwo = new JLabel("Enter how many words you want generate:");
+            JLabel labelTwo = new JLabel("Enter desired word count (approximate): ");
             JTextField textLength = new JTextField(20);
             JButton submitButton = new JButton("Submit");
 
@@ -80,15 +80,38 @@ public class RunMyProject implements Runnable {
                     control_panel.add(keyword);
                     control_panel.add(submitButton2);
                     submitButton2.addActionListener(eq -> {
-                        RunMyProject.bookNumber = Integer.parseInt(bookNumber.getText());
-                        RunMyProject.chosenBook = GutenbergSearch.getBooksByAuthor(savedAuthorName).get(RunMyProject.bookNumber-1);
-                        RunMyProject.keyword = keyword.getText();
-                        bookies.setPickBookPage(false);
-                        bookies.setGeneratedTextPage(true);
-                        control_panel.removeAll();
-                        control_panel.revalidate();
-                        control_panel.repaint();
+                        try {
+                            int enteredNumber = Integer.parseInt(bookNumber.getText());
+                            java.util.List<GutenbergSearch.BookEntry> books = GutenbergSearch.getBooksByAuthor(savedAuthorName);
+
+
+                            // Validate book number range
+                            if (enteredNumber < 1 || enteredNumber > books.size()) {
+                                JOptionPane.showMessageDialog(frame,
+                                        "Invalid book number! Please enter a number between 1 and " + books.size() + ".");
+                                return;
+                            }
+
+
+                            RunMyProject.bookNumber = enteredNumber;
+                            RunMyProject.chosenBook = books.get(enteredNumber - 1);
+                            RunMyProject.keyword = keyword.getText();
+
+
+                            bookies.setPickBookPage(false);
+                            bookies.setGeneratedTextPage(true);
+                            control_panel.removeAll();
+                            control_panel.revalidate();
+                            control_panel.repaint();
+
+
+                        } catch (NumberFormatException ex) {
+                            JOptionPane.showMessageDialog(frame, "Please enter a valid number for book selection.");
+                        } catch (IndexOutOfBoundsException | NoSuchElementException ex) {
+                            JOptionPane.showMessageDialog(frame, "Book number out of range. Please try again.");
+                        }
                     });
+
                 }
             });
 
