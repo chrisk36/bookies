@@ -39,7 +39,7 @@ public class RunMyProject implements Runnable {
 
             JLabel labelOne = new JLabel("Enter author name:");
             JTextField authorName = new JTextField(20);
-            JLabel labelTwo = new JLabel("Enter text length:");
+            JLabel labelTwo = new JLabel("Enter how many words you want generate:");
             JTextField textLength = new JTextField(20);
             JButton submitButton = new JButton("Submit");
 
