@@ -195,7 +195,6 @@ public class Bookies extends JPanel{
             g.drawString("by natalie lim, christian kim, & kate li", 150, 550);
             g.setColor(Color.decode("#595959"));
             g.setFont(new Font("Monospace", Font.BOLD, 20));
-            //g.drawString("click anywhere to get started", 340, 500);
         } else if (actualProject) {
             g.setColor(Color.decode("#F2E9DC"));
             g.fillRect(0, 0, 1000, 1000);
